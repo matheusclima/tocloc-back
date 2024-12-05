@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ReservasService } from './reservas.service';
 import { CriarReservaDto } from './dto/criar-reserva.dto';
 import { Reserva } from './reservas.entity';
@@ -13,7 +22,7 @@ export class ReservasController {
   }
 
   @Get(':id')
-  async findOne(id: number) {
+  async findOne(@Param('id') id: number) {
     return this.reservasService.findOne(id);
   }
 
@@ -23,12 +32,20 @@ export class ReservasController {
   }
 
   @Put(':id')
-  async update(@Body() body: Partial<Reserva>, id: number) {
+  async update(@Body() body: Partial<Reserva>, @Param('id') id: number) {
     return this.reservasService.update(id, body);
   }
 
+  @Patch(':id/status')
+  async updateStatus(
+    @Body('status') status: 'pendente' | 'confirmada' | 'cancelada',
+    @Param('id') id: number,
+  ) {
+    return this.reservasService.updateStatus(id, status);
+  }
+
   @Delete(':id')
-  async delete(id: number) {
+  async delete(@Param('id') id: number) {
     return this.reservasService.delete(id);
   }
 }

@@ -15,13 +15,16 @@ export class Reserva {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ nullable: false, type: 'timestamp' })
-  dataInicio: Date;
+  @Column({ nullable: false, type: 'date' })
+  data: Date;
 
-  @Column({ nullable: false, type: 'timestamp' })
-  dataFim: Date;
+  @Column({ nullable: false, type: 'time' })
+  horarioInicio: Date;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'time' })
+  horarioFim: Date;
+
+  @Column({ nullable: false, default: 'pendente' })
   status: 'pendente' | 'confirmada' | 'cancelada';
 
   @CreateDateColumn({ name: 'created_at' })
@@ -36,7 +39,7 @@ export class Reserva {
   @ManyToOne(() => Usuario, (usuario) => usuario.reservas)
   usuario: Usuario;
 
-  @ManyToOne(() => Campo, (campo) => campo.reservas, { cascade: true })
+  @ManyToOne(() => Campo, (campo) => campo.reservas)
   campo: Campo;
 
   constructor(partial: Partial<Reserva>) {

@@ -10,6 +10,7 @@ import {
 import { EstabelecimentosService } from './estabelecimentos.service';
 import { Estabelecimento } from './estabelecimentos.entity';
 import { CriarEstabelecimentoDto } from './dto/criar-estabelecimento.dto';
+import { Campo } from '../campos/campos.entity';
 
 @Controller('estabelecimentos')
 export class EstabelecimentosController {
@@ -23,13 +24,23 @@ export class EstabelecimentosController {
   }
 
   @Get(':id')
-  findOne(id: number) {
+  findOne(@Param('id') id: number) {
     return this.estabelecimentosService.findOne(id);
+  }
+
+  @Get(':id/reservas')
+  findReservas(@Param('id') id: number) {
+    return this.estabelecimentosService.findReservas(id);
   }
 
   @Post()
   create(@Body() criarEstabelecimentoDto: CriarEstabelecimentoDto) {
     return this.estabelecimentosService.create(criarEstabelecimentoDto);
+  }
+
+  @Post(':id/campos')
+  createCampo(@Param('id') id: number, @Body() body: Partial<Campo>) {
+    return this.estabelecimentosService.criarCampo(id, body);
   }
 
   @Put(':id')

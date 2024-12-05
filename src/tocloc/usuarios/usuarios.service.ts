@@ -32,9 +32,12 @@ export class UsuariosService {
   async findEstabelecimentos(id: number): Promise<Estabelecimento[]> {
     const usuario = await this.usuariosRepository.findOne({
       where: { id },
-      relations: ['estabelecimentos', 'estabelecimentos.endereco'],
+      relations: [
+        'estabelecimentos',
+        'estabelecimentos.endereco',
+        'estabelecimentos.campos',
+      ],
     });
-    console.log(usuario);
 
     return usuario.estabelecimentos;
   }
@@ -71,7 +74,6 @@ export class UsuariosService {
       where: { id },
       relations: ['endereco'],
     });
-    console.log(novoUsuario);
     if (!novoUsuario) {
       throw new NotFoundException('Usuário não encontrado');
     }

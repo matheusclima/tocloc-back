@@ -28,6 +28,14 @@ export class ReservasService {
     return this.reservasRepository.findOne({ where: { id } });
   }
 
+  async updateStatus(
+    id: number,
+    status: 'pendente' | 'confirmada' | 'cancelada',
+  ): Promise<Reserva> {
+    await this.reservasRepository.update(id, { status });
+    return this.reservasRepository.findOne({ where: { id } });
+  }
+
   async delete(id: number): Promise<void> {
     await this.reservasRepository.delete(id);
   }

@@ -46,7 +46,9 @@ export class Campo {
   )
   estabelecimento: Estabelecimento;
 
-  @OneToMany(() => Reserva, (reserva) => reserva.campo)
+  @OneToMany(() => Reserva, (reserva) => reserva.campo, {
+    cascade: true,
+  })
   reservas: Reserva[];
 
   constructor(partial: Partial<Campo>) {

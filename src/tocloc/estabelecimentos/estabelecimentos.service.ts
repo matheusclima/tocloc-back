@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { CriarEstabelecimentoDto } from './dto/criar-estabelecimento.dto';
 import { Endereco } from '../enderecos/enderecos.entity';
 import { Usuario } from '../usuarios/usuarios.entity';
+import { Campo } from '../campos/campos.entity';
+import { Reserva } from '../reservas/reservas.entity';
 
 @Injectable()
 export class EstabelecimentosService {
@@ -28,6 +30,27 @@ export class EstabelecimentosService {
       where: { id },
       relations: ['campos'],
     });
+  }
+
+  async findReservas(id: number): Promise<Reserva[]> {
+    const estabelecimento = await this.estabelecimentosRepository.findOne({
+      where: { id },
+      relations: [
+        'campos',
+        'campos.reservas',
+        'campos.reservas.usuario',
+        'campos.reservas.campo',
+      ], // Carrega todas as relações necessárias
+    });
+
+    if (!estabelecimento) {
+      throw new NotFoundException('Estabelecimento não encontrado');
+    }
+
+    // Extrai as reservas de todos os campos do estabelecimento
+    const reservas = estabelecimento.campos.flatMap((campo) => campo.reservas);
+
+    return reservas;
   }
 
   async create(
@@ -55,6 +78,25 @@ export class EstabelecimentosService {
 
     // 5. Salvar o estabelecimento
     return await this.estabelecimentosRepository.save(novoEstabelecimento);
+  }
+
+  async criarCampo(
+    id: number,
+    campo: Partial<Campo>,
+  ): Promise<Estabelecimento> {
+    const estabelecimento = await this.estabelecimentosRepository.findOne({
+      where: { id },
+      relations: ['campos'],
+    });
+
+    if (!estabelecimento) {
+      throw new NotFoundException('Estabelecimento não encontrado');
+    }
+
+    const novoCampo = new Campo(campo);
+    estabelecimento.campos.push(novoCampo);
+
+    return await this.estabelecimentosRepository.save(estabelecimento);
   }
 
   async update(
