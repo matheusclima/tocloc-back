@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   ConflictException,
   Injectable,
@@ -107,5 +108,27 @@ export class UsuariosService {
 
   async delete(id: number): Promise<void> {
     await this.usuariosRepository.softDelete(id);
+  }
+
+  async resetPassword(
+    userId: number,
+    newPassword: string,
+    confirmPassword: string,
+  ): Promise<void> {
+    if (newPassword !== confirmPassword) {
+      throw new ConflictException('As senhas não coincidem.');
+    }
+
+    const usuario = await this.usuariosRepository.findOne({
+      where: { id: userId },
+    });
+    if (!usuario) {
+      throw new NotFoundException('Usuário não encontrado.');
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    usuario.senha = await bcrypt.hash(newPassword, salt);
+
+    await this.usuariosRepository.save(usuario);
   }
 }

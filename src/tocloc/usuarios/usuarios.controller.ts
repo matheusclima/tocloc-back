@@ -44,4 +44,14 @@ export class UsuariosController {
   delete(@Param('id') id: string) {
     return this.usuariosService.delete(+id);
   }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body('userId') userId: number,
+    @Body('newPassword') newPassword: string,
+    @Body('confirmPassword') confirmPassword: string,
+  ) {
+    await this.usuariosService.resetPassword(userId, newPassword, confirmPassword);
+    return { message: 'Senha redefinida com sucesso.' };
+  }
 }
