@@ -22,9 +22,6 @@ export class Endereco {
   cidade: string;
 
   @Column({ nullable: true })
-  estado: string;
-
-  @Column({ nullable: true })
   bairro: string;
 
   @Column({ nullable: true })

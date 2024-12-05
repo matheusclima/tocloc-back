@@ -33,7 +33,7 @@ export class Reserva {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.reservas, { cascade: true })
+  @ManyToOne(() => Usuario, (usuario) => usuario.reservas)
   usuario: Usuario;
 
   @ManyToOne(() => Campo, (campo) => campo.reservas, { cascade: true })

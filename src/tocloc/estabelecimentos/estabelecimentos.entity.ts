@@ -22,6 +22,18 @@ export class Estabelecimento {
   @Column({ nullable: false })
   nome: string;
 
+  @Column()
+  descricao: string;
+
+  @Column({ name: 'telefone', nullable: true })
+  telefone: string;
+
+  @Column({ name: 'horario_inicio', nullable: true, type: 'time' })
+  horarioInicio: Date;
+
+  @Column({ name: 'horario_fim', nullable: true, type: 'time' })
+  horarioFim: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -31,7 +43,9 @@ export class Estabelecimento {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.estabelecimentos)
+  @ManyToOne(() => Usuario, (usuario) => usuario.estabelecimentos, {
+    cascade: true,
+  })
   usuario: Usuario;
 
   @OneToMany(() => Campo, (campo) => campo.estabelecimento, {

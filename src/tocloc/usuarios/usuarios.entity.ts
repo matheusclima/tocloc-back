@@ -27,6 +27,9 @@ export class Usuario {
   @Column({ nullable: false })
   senha: string;
 
+  @Column({ nullable: true })
+  telefone: string;
+
   @Column({ default: 'usuario' })
   tipo: 'usuario' | 'locador' | 'admin';
 
@@ -43,7 +46,6 @@ export class Usuario {
     () => Estabelecimento,
     (estabelecimento) => estabelecimento.usuario,
     {
-      cascade: true,
       onDelete: 'CASCADE',
     },
   )

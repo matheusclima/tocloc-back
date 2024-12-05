@@ -23,8 +23,8 @@ export class EstabelecimentosController {
   }
 
   @Get(':id')
-  findOne(id: string) {
-    return this.estabelecimentosService.findOne(+id);
+  findOne(id: number) {
+    return this.estabelecimentosService.findOne(id);
   }
 
   @Post()

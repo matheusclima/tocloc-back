@@ -7,6 +7,7 @@ import { EstabelecimentosModule } from './tocloc/estabelecimentos/estabeleciment
 import { EnderecosModule } from './tocloc/enderecos/enderecos.module';
 import { CamposModule } from './tocloc/campos/campos.module';
 import { ReservasModule } from './tocloc/reservas/reservas.module';
+import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -19,7 +20,7 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     UsuariosModule,
@@ -27,6 +28,7 @@ dotenv.config();
     EnderecosModule,
     CamposModule,
     ReservasModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
